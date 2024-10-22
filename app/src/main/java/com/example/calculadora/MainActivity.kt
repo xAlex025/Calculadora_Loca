@@ -49,135 +49,71 @@ fun CrazyCalculatorApp() {
             color = Color.White, // Texto blanco
             fontSize = 48.sp
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Botón C en la parte superior izquierda
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp), // Espacio entre el botón "C" y los números
+                .padding(bottom = 4.dp), // Reducimos el espacio entre el botón "C" y los números
             horizontalArrangement = Arrangement.Start
         ) {
-            CircularButton("C", Color.Gray) { // Botón C en gris
+            CircularButton("C", Color.Gray, Modifier.weight(1f)) { // Botón C en gris
                 currentInput = ""
                 display = "0"
             }
         }
 
-        // Filas principales de botones
-        Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
-            // Botones de números a la izquierda
-            Column(modifier = Modifier.weight(3f)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircularButton("7", Color.DarkGray) {
-                        currentInput += "7"
-                        display = currentInput
-                    }
-                    CircularButton("8", Color.DarkGray) {
-                        currentInput += "8"
-                        display = currentInput
-                    }
-                    CircularButton("9", Color.DarkGray) {
-                        currentInput += "9"
-                        display = currentInput
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircularButton("4", Color.DarkGray) {
-                        currentInput += "4"
-                        display = currentInput
-                    }
-                    CircularButton("5", Color.DarkGray) {
-                        currentInput += "5"
-                        display = currentInput
-                    }
-                    CircularButton("6", Color.DarkGray) {
-                        currentInput += "6"
-                        display = currentInput
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircularButton("1", Color.DarkGray) {
-                        currentInput += "1"
-                        display = currentInput
-                    }
-                    CircularButton("2", Color.DarkGray) {
-                        currentInput += "2"
-                        display = currentInput
-                    }
-                    CircularButton("3", Color.DarkGray) {
-                        currentInput += "3"
-                        display = currentInput
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircularButton("0", Color.DarkGray, Modifier.weight(2f)) {
-                        currentInput += "0"
-                        display = currentInput
-                    }
-                    CircularButton(".", Color.DarkGray, Modifier.weight(1f)) {
-                        currentInput += "."
-                        display = currentInput
-                    }
-                }
+        // Filas de números y operaciones combinadas
+        Column(modifier = Modifier.fillMaxHeight()) {
+            // Primera fila: 7, 8, 9, A (Suma)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(vertical = 2.dp)) { // Reducimos el espacio vertical entre filas
+                CircularButton("7", Color.DarkGray, Modifier.weight(1f)) { currentInput += "7"; display = currentInput }
+                CircularButton("8", Color.DarkGray, Modifier.weight(1f)) { currentInput += "8"; display = currentInput }
+                CircularButton("9", Color.DarkGray, Modifier.weight(1f)) { currentInput += "9"; display = currentInput }
+                CircularButton("A", Color(0xFFFF9800), Modifier.weight(1f)) { currentInput += " + "; display = currentInput } // Suma
             }
 
-            // Botones de operaciones a la derecha
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly // Espaciado ajustado
-            ) {
-                CircularButton("A", Color(0xFFFF9800)) { // Suma
-                    currentInput += " + "
-                    display = currentInput
-                }
-                CircularButton("B", Color(0xFFFF9800)) { // Resta
-                    currentInput += " - "
-                    display = currentInput
-                }
-                CircularButton("C", Color(0xFFFF9800)) { // Multiplicación
-                    currentInput += " * "
-                    display = currentInput
-                }
-                CircularButton("D", Color(0xFFFF9800)) { // División
-                    currentInput += " / "
-                    display = currentInput
-                }
+            // Segunda fila: 4, 5, 6, B (Resta)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(vertical = 2.dp)) { // Reducimos el espacio vertical entre filas
+                CircularButton("4", Color.DarkGray, Modifier.weight(1f)) { currentInput += "4"; display = currentInput }
+                CircularButton("5", Color.DarkGray, Modifier.weight(1f)) { currentInput += "5"; display = currentInput }
+                CircularButton("6", Color.DarkGray, Modifier.weight(1f)) { currentInput += "6"; display = currentInput }
+                CircularButton("B", Color(0xFFFF9800), Modifier.weight(1f)) { currentInput += " - "; display = currentInput } // Resta
+            }
+
+            // Tercera fila: 1, 2, 3, C (Multiplicación)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(vertical = 2.dp)) { // Reducimos el espacio vertical entre filas
+                CircularButton("1", Color.DarkGray, Modifier.weight(1f)) { currentInput += "1"; display = currentInput }
+                CircularButton("2", Color.DarkGray, Modifier.weight(1f)) { currentInput += "2"; display = currentInput }
+                CircularButton("3", Color.DarkGray, Modifier.weight(1f)) { currentInput += "3"; display = currentInput }
+                CircularButton("C", Color(0xFFFF9800), Modifier.weight(1f)) { currentInput += " * "; display = currentInput } // Multiplicación
+            }
+
+            // Cuarta fila: 0, ., D (División)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(vertical = 2.dp)) { // Reducimos el espacio vertical entre filas
+                CircularButton("0", Color.DarkGray, Modifier.weight(2f)) { currentInput += "0"; display = currentInput }
+                CircularButton(".", Color.DarkGray, Modifier.weight(1f)) { currentInput += "."; display = currentInput }
+                CircularButton("D", Color(0xFFFF9800), Modifier.weight(1f)) { currentInput += " / "; display = currentInput } // División
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Botón de calcular el resultado
-        CircularButton("=", backgroundColor = Color(0xFFFF9800), modifier = Modifier.fillMaxWidth()) { // Botón de igual en naranja
+        CircularButton("=", backgroundColor = Color(0xFFFF9800), modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .padding(vertical = 2.dp)) { // Botón de igual en naranja
             display = try {
                 val result = eval(currentInput)
                 currentInput = ""
@@ -196,7 +132,7 @@ fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifie
         onClick = onClick,
         modifier = modifier
             .size(80.dp) // Ajuste del tamaño del botón
-            .padding(4.dp), // Espaciado entre botones
+            .padding(2.dp), // Reducimos el espacio entre botones
         shape = CircleShape, // Forma circular
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
