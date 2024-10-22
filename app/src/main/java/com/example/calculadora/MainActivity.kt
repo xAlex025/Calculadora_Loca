@@ -51,65 +51,133 @@ fun CrazyCalculatorApp() {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Disposición tradicional de los botones de la calculadora
-        val buttons = listOf(
-            listOf("7", "8", "9"),
-            listOf("4", "5", "6"),
-            listOf("1", "2", "3"),
-            listOf("0", "C") // Fila de "0" y "C" en la parte inferior
-        )
+        // Botón C en la parte superior izquierda
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp), // Espacio entre el botón "C" y los números
+            horizontalArrangement = Arrangement.Start
+        ) {
+            CircularButton("C", Color.Gray) { // Botón C en gris
+                currentInput = ""
+                display = "0"
+            }
+        }
 
-        for (row in buttons) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                for (button in row) {
-                    val buttonColor = if (button == "C") Color.Gray else Color.DarkGray // Botón C en gris, números en gris oscuro
-                    CircularButton(buttonText = button, backgroundColor = buttonColor) {
-                        when (button) {
-                            "C" -> { // Botón de limpiar
-                                currentInput = ""
-                                display = "0"
-                            }
-                            else -> {
-                                currentInput += button
-                                display = currentInput
-                            }
-                        }
+        // Filas principales de botones
+        Row(modifier = Modifier.fillMaxWidth().weight(1f)) {
+            // Botones de números a la izquierda
+            Column(modifier = Modifier.weight(3f)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircularButton("7", Color.DarkGray) {
+                        currentInput += "7"
+                        display = currentInput
+                    }
+                    CircularButton("8", Color.DarkGray) {
+                        currentInput += "8"
+                        display = currentInput
+                    }
+                    CircularButton("9", Color.DarkGray) {
+                        currentInput += "9"
+                        display = currentInput
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircularButton("4", Color.DarkGray) {
+                        currentInput += "4"
+                        display = currentInput
+                    }
+                    CircularButton("5", Color.DarkGray) {
+                        currentInput += "5"
+                        display = currentInput
+                    }
+                    CircularButton("6", Color.DarkGray) {
+                        currentInput += "6"
+                        display = currentInput
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircularButton("1", Color.DarkGray) {
+                        currentInput += "1"
+                        display = currentInput
+                    }
+                    CircularButton("2", Color.DarkGray) {
+                        currentInput += "2"
+                        display = currentInput
+                    }
+                    CircularButton("3", Color.DarkGray) {
+                        currentInput += "3"
+                        display = currentInput
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircularButton("0", Color.DarkGray, Modifier.weight(2f)) {
+                        currentInput += "0"
+                        display = currentInput
+                    }
+                    CircularButton(".", Color.DarkGray, Modifier.weight(1f)) {
+                        currentInput += "."
+                        display = currentInput
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
 
-        // Filas de operaciones desordenadas (A para suma, B para resta, etc.)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            CircularButton("A", backgroundColor = Color(0xFFFF9800)) { // Operaciones en naranja
-                currentInput += " + "
-                display = currentInput
-            }
-            CircularButton("B", backgroundColor = Color(0xFFFF9800)) { // Operaciones en naranja
-                currentInput += " - "
-                display = currentInput
-            }
-            CircularButton("C", backgroundColor = Color(0xFFFF9800)) { // Operaciones en naranja
-                currentInput += " * "
-                display = currentInput
-            }
-            CircularButton("D", backgroundColor = Color(0xFFFF9800)) { // Operaciones en naranja
-                currentInput += " / "
-                display = currentInput
+            // Botones de operaciones a la derecha
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly // Espaciado ajustado
+            ) {
+                CircularButton("A", Color(0xFFFF9800)) { // Suma
+                    currentInput += " + "
+                    display = currentInput
+                }
+                CircularButton("B", Color(0xFFFF9800)) { // Resta
+                    currentInput += " - "
+                    display = currentInput
+                }
+                CircularButton("C", Color(0xFFFF9800)) { // Multiplicación
+                    currentInput += " * "
+                    display = currentInput
+                }
+                CircularButton("D", Color(0xFFFF9800)) { // División
+                    currentInput += " / "
+                    display = currentInput
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        CircularButton("=", backgroundColor = Color(0xFFFF9800)) { // Botón de igual en naranja
+        // Botón de calcular el resultado
+        CircularButton("=", backgroundColor = Color(0xFFFF9800), modifier = Modifier.fillMaxWidth()) { // Botón de igual en naranja
             display = try {
                 val result = eval(currentInput)
                 currentInput = ""
@@ -123,10 +191,10 @@ fun CrazyCalculatorApp() {
 }
 
 @Composable
-fun CircularButton(buttonText: String, backgroundColor: Color, onClick: () -> Unit) {
+fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .size(80.dp) // Ajuste del tamaño del botón
             .padding(4.dp), // Espaciado entre botones
         shape = CircleShape, // Forma circular
@@ -145,6 +213,7 @@ fun CircularButton(buttonText: String, backgroundColor: Color, onClick: () -> Un
     }
 }
 
+// Eval function to calculate the result
 fun eval(expression: String): Double {
     val tokens = expression.split(" ")
     if (tokens.isEmpty()) return 0.0
