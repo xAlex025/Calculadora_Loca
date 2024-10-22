@@ -54,10 +54,10 @@ fun CrazyCalculatorApp() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 4.dp), // Reducimos el espacio entre el botón "C" y los números
+                .padding(bottom = 24.dp), // Reducimos el espacio entre el botón "C" y los números
             horizontalArrangement = Arrangement.Start
         ) {
-            CircularButton("C", Color.Gray, Modifier.weight(1f)) { // Botón C en gris
+            CircularButton("AC", Color.Gray, Modifier.weight(1f)) { // Botón C en gris
                 currentInput = ""
                 display = "0"
             }
