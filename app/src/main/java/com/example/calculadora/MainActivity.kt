@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
 fun CrazyCalculatorApp() {
     var display by remember { mutableStateOf("0") }
     var currentInput by remember { mutableStateOf("") }
+    var lastResult by remember { mutableStateOf(0.0) }
 
     Column(
         modifier = Modifier
@@ -50,7 +51,7 @@ fun CrazyCalculatorApp() {
             fontSize = 48.sp
         )
 
-        // Botón C en la parte superior izquierda
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -127,10 +128,10 @@ fun CrazyCalculatorApp() {
             .weight(1f)
             .padding(vertical = 2.dp)) { // Botón de igual en naranja
             display = try {
-                val result = eval(currentInput)
-                currentInput = ""
-                val finalResult = result.toString().replace("5", "6")
-                finalResult
+                val result = eval(currentInput, lastResult) // Usa el último resultado si es necesario
+                lastResult = result // Guarda el último resultado para continuar calculando
+                currentInput = result.toString() // Muestra el resultado en el input para continuar
+                result.toString()
             } catch (e: Exception) {
                 "Error"
             }
@@ -161,12 +162,22 @@ fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifie
     }
 }
 
-// Eval function to calculate the result
-fun eval(expression: String): Double {
+fun eval(expression: String, previousResult: Double = 0.0): Double {
     val tokens = expression.split(" ")
-    var result = tokens[0].toDouble()
 
-    var i = 1
+    // Si no hay tokens (expresión vacía), devolvemos el resultado previo
+    if (tokens.isEmpty()) return previousResult
+
+    // Determinar si la expresión empieza con un número o un operador
+    var result = if (tokens[0].toDoubleOrNull() != null) {
+        tokens[0].toDouble()
+    } else {
+        previousResult
+    }
+
+    var i = if (tokens[0].toDoubleOrNull() != null) 1 else 0
+
+    // Evaluar el resto de la expresión
     while (i < tokens.size) {
         val operator = tokens[i]
         val nextValue = tokens[i + 1].toDouble()
