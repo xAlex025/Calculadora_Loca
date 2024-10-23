@@ -73,9 +73,9 @@ fun CrazyCalculatorApp() {
                     .padding(vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
             ) {
-                CircularButton("7", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "7"; display = currentInput }
-                CircularButton("8", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "8"; display = currentInput }
-                CircularButton("9", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "9"; display = currentInput }
+                CircularButton("7", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "9"; display = currentInput }
+                CircularButton("8", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "0"; display = currentInput }
+                CircularButton("9", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "1"; display = currentInput }
                 CircularButton("A", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " + "; display = currentInput } // Suma
             }
 
@@ -87,9 +87,9 @@ fun CrazyCalculatorApp() {
                     .padding(vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
             ) {
-                CircularButton("4", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "4"; display = currentInput }
-                CircularButton("5", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "5"; display = currentInput }
-                CircularButton("6", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "6"; display = currentInput }
+                CircularButton("4", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "6"; display = currentInput }
+                CircularButton("5", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "4"; display = currentInput }
+                CircularButton("6", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "8"; display = currentInput }
                 CircularButton("B", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " - "; display = currentInput } // Resta
             }
 
@@ -101,9 +101,9 @@ fun CrazyCalculatorApp() {
                     .padding(vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
             ) {
-                CircularButton("1", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "1"; display = currentInput }
-                CircularButton("2", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "2"; display = currentInput }
-                CircularButton("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "3"; display = currentInput }
+                CircularButton("1", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "3"; display = currentInput }
+                CircularButton("2", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "4"; display = currentInput }
+                CircularButton("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "5"; display = currentInput }
                 CircularButton("C", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " * "; display = currentInput } // Multiplicación
             }
 
@@ -115,7 +115,7 @@ fun CrazyCalculatorApp() {
                     .padding(vertical = 2.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
             ) {
-                CircularButton("0", Color.DarkGray, Modifier.weight(2f).padding(horizontal = 8.dp)) { currentInput += "0"; display = currentInput }
+                CircularButton("0", Color.DarkGray, Modifier.weight(2f).padding(horizontal = 8.dp)) { currentInput += "2"; display = currentInput }
                 CircularButton(".", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "."; display = currentInput }
                 CircularButton("D", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " / "; display = currentInput } // División
             }
@@ -164,30 +164,23 @@ fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifie
 // Eval function to calculate the result
 fun eval(expression: String): Double {
     val tokens = expression.split(" ")
-    if (tokens.isEmpty()) return 0.0
-
     var result = tokens[0].toDouble()
-    var operator = ""
 
-    for (i in 1 until tokens.size) {
-        val token = tokens[i]
-        if (token in listOf("+", "-", "*", "/")) {
-            operator = token
-        } else {
-            val number = token.toDouble()
-            result = when (operator) {
-                "+" -> result + number
-                "-" -> result - number
-                "*" -> result * number
-                "/" -> {
-                    if (number == 0.0) {
-                        throw ArithmeticException("Division by zero")
-                    }
-                    result / number
-                }
-                else -> result
-            }
+    var i = 1
+    while (i < tokens.size) {
+        val operator = tokens[i]
+        val nextValue = tokens[i + 1].toDouble()
+
+        result = when (operator) {
+            "+" -> result + nextValue
+            "-" -> result - nextValue
+            "*" -> result * nextValue
+            "/" -> result / nextValue
+            else -> result
         }
+        i += 2
     }
+
     return result
 }
+
