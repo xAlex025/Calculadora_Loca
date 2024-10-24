@@ -128,7 +128,10 @@ fun CrazyCalculatorApp() {
             .weight(1f)
             .padding(vertical = 2.dp)) { // Botón de igual en naranja
             display = try {
-                val result = eval(currentInput, lastResult) // Usa el último resultado si es necesario
+                var result = eval(currentInput, lastResult) // Usa el último resultado si es necesario
+
+                val finalResult = result.toString().replace("5", "6")
+                result = finalResult.toDouble()
                 lastResult = result // Guarda el último resultado para continuar calculando
                 currentInput = result.toString() // Muestra el resultado en el input para continuar
                 result.toString()
