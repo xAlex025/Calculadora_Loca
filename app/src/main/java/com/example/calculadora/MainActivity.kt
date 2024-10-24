@@ -19,27 +19,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CrazyCalculatorApp()
+            Calculadora()
         }
     }
 }
 
 @Composable
-fun CrazyCalculatorApp() {
-    var display by remember { mutableStateOf("0") }
-    var currentInput by remember { mutableStateOf("") }
-    var lastResult by remember { mutableStateOf(0.0) }
+fun Calculadora() {
+    var pantalla by remember { mutableStateOf("0") }
+    var valor_entrada by remember { mutableStateOf("") }
+    var ultimo_resultado by remember { mutableStateOf(0.0) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black) // Fondo oscuro
+            .background(Color.Black)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Display de la calculadora
         Text(
-            text = display,
+            text = pantalla,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,94 +46,87 @@ fun CrazyCalculatorApp() {
                 .background(Color.DarkGray)
                 .padding(24.dp),
             textAlign = TextAlign.End,
-            color = Color.White, // Texto blanco
+            color = Color.White,
             fontSize = 48.sp
         )
-
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 30.dp), // Reducimos el espacio entre el botón "C" y los números
+                .padding(bottom = 30.dp),
             horizontalArrangement = Arrangement.Start
         ) {
-            CircularButton("AC", Color.Gray, Modifier.weight(1f)) { // Botón C en gris
-                currentInput = ""
-                display = "0"
+            botones("AC", Color.Gray, Modifier.weight(1f)) {
+                valor_entrada = ""
+                pantalla = "0"
             }
         }
 
-        // Filas de números y operaciones combinadas
-        Column(modifier = Modifier.weight(5f)) { // Usamos weight aquí para asegurarnos de que las filas ocupen espacio pero no todo
-            // Primera fila: 7, 8, 9, A (Suma)
+        Column(modifier = Modifier.weight(5f)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(vertical = 2.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                CircularButton("7", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "9"; display = currentInput }
-                CircularButton("8", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "0"; display = currentInput }
-                CircularButton("9", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "1"; display = currentInput }
-                CircularButton("A", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " + "; display = currentInput } // Suma
+                botones("7", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "9"; pantalla = valor_entrada }
+                botones("8", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "0"; pantalla = valor_entrada }
+                botones("9", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "1"; pantalla = valor_entrada }
+                botones("A", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += " + "; pantalla = valor_entrada }
             }
 
-            // Segunda fila: 4, 5, 6, B (Resta)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(vertical = 2.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                CircularButton("4", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "6"; display = currentInput }
-                CircularButton("5", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "4"; display = currentInput }
-                CircularButton("6", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "8"; display = currentInput }
-                CircularButton("B", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " - "; display = currentInput } // Resta
+                botones("4", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "6"; pantalla = valor_entrada }
+                botones("5", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "4"; pantalla = valor_entrada }
+                botones("6", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "8"; pantalla = valor_entrada }
+                botones("B", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += " - "; pantalla = valor_entrada }
             }
 
-            // Tercera fila: 1, 2, 3, C (Multiplicación)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(vertical = 2.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                CircularButton("1", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "3"; display = currentInput }
-                CircularButton("2", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "4"; display = currentInput }
-                CircularButton("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "5"; display = currentInput }
-                CircularButton("C", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " * "; display = currentInput } // Multiplicación
+                botones("1", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "3"; pantalla = valor_entrada }
+                botones("2", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "4"; pantalla = valor_entrada }
+                botones("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "5"; pantalla = valor_entrada }
+                botones("C", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += " * "; pantalla = valor_entrada }
             }
 
-            // Cuarta fila: 0, ., D (División)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(vertical = 2.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly // Distribuimos espacio uniformemente
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                CircularButton("0", Color.DarkGray, Modifier.weight(2f).padding(horizontal = 8.dp)) { currentInput += "2"; display = currentInput }
-                CircularButton(".", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += "."; display = currentInput }
-                CircularButton("D", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { currentInput += " / "; display = currentInput } // División
+                botones("0", Color.DarkGray, Modifier.weight(2f).padding(horizontal = 8.dp)) { valor_entrada += "2"; pantalla = valor_entrada }
+                botones(".", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "."; pantalla = valor_entrada }
+                botones("D", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += " / "; pantalla = valor_entrada }
             }
         }
 
-        // Botón de calcular el resultado
-        CircularButton("=", backgroundColor = Color(0xFFFF9800), modifier = Modifier
+        botones("=", color_fondo = Color(0xFFFF9800), modifier = Modifier
             .fillMaxWidth()
             .weight(1f)
-            .padding(vertical = 2.dp)) { // Botón de igual en naranja
-            display = try {
-                var result = eval(currentInput, lastResult) // Usa el último resultado si es necesario
+            .padding(vertical = 2.dp)) {
+            pantalla = try {
+                var resultado_1 = resultado(valor_entrada, ultimo_resultado)
 
-                val finalResult = result.toString().replace("5", "6")
-                result = finalResult.toDouble()
-                lastResult = result // Guarda el último resultado para continuar calculando
-                currentInput = result.toString() // Muestra el resultado en el input para continuar
-                result.toString()
+                val resultado_final = resultado_1.toString().replace("5", "6")
+                resultado_1 = resultado_final.toDouble()
+                ultimo_resultado = resultado_1
+                valor_entrada = resultado_1.toString()
+                resultado_1.toString()
             } catch (e: Exception) {
                 "Error"
             }
@@ -143,21 +135,21 @@ fun CrazyCalculatorApp() {
 }
 
 @Composable
-fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun botones(textoBoton: String, color_fondo: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .size(80.dp) // Ajuste del tamaño del botón
-            .padding(2.dp), // Reducimos el espacio entre botones
-        shape = CircleShape, // Forma circular
+            .size(80.dp)
+            .padding(2.dp),
+        shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = backgroundColor,
+            containerColor = color_fondo,
             contentColor = Color.White
         ),
         elevation = ButtonDefaults.buttonElevation(6.dp)
     ) {
         Text(
-            text = buttonText,
+            text = textoBoton,
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 24.sp,
             textAlign = TextAlign.Center
@@ -165,36 +157,32 @@ fun CircularButton(buttonText: String, backgroundColor: Color, modifier: Modifie
     }
 }
 
-fun eval(expression: String, previousResult: Double = 0.0): Double {
-    val tokens = expression.split(" ")
+fun resultado(valores: String, resultado_previo: Double = 0.0): Double {
+    val numeros = valores.split(" ")
 
-    // Si no hay tokens (expresión vacía), devolvemos el resultado previo
-    if (tokens.isEmpty()) return previousResult
+    if (numeros.isEmpty()) return resultado_previo
 
-    // Determinar si la expresión empieza con un número o un operador
-    var result = if (tokens[0].toDoubleOrNull() != null) {
-        tokens[0].toDouble()
+    var resultado_final = if (numeros[0].toDoubleOrNull() != null) {
+        numeros[0].toDouble()
     } else {
-        previousResult
+        resultado_previo
     }
 
-    var i = if (tokens[0].toDoubleOrNull() != null) 1 else 0
+    var i = if (numeros[0].toDoubleOrNull() != null) 1 else 0
 
-    // Evaluar el resto de la expresión
-    while (i < tokens.size) {
-        val operator = tokens[i]
-        val nextValue = tokens[i + 1].toDouble()
+    while (i < numeros.size) {
+        val operador = numeros[i]
+        val siguienteValor = numeros[i + 1].toDouble()
 
-        result = when (operator) {
-            "+" -> result + nextValue
-            "-" -> result - nextValue
-            "*" -> result * nextValue
-            "/" -> result / nextValue
-            else -> result
+        resultado_final = when (operador) {
+            "+" -> resultado_final + siguienteValor
+            "-" -> resultado_final - siguienteValor
+            "*" -> resultado_final * siguienteValor
+            "/" -> resultado_final / siguienteValor
+            else -> resultado_final
         }
         i += 2
     }
 
-    return result
+    return resultado_final
 }
-
