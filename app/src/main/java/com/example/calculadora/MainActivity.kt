@@ -98,7 +98,7 @@ fun Calculadora() {
             ) {
                 botones("1", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "3"; pantalla = valor_entrada }
                 botones("2", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "4"; pantalla = valor_entrada }
-                botones("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "5"; pantalla = valor_entrada }
+                botones("3", Color.DarkGray, Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += "7"; pantalla = valor_entrada }
                 botones("C", Color(0xFFFF9800), Modifier.weight(1f).padding(horizontal = 8.dp)) { valor_entrada += " * "; pantalla = valor_entrada }
             }
 
